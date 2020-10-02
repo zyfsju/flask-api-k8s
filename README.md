@@ -29,8 +29,11 @@ docker run --env JWT_SECRET=<SOME_SECRET> -p 80:8080 jwt-api-test
 ```
 
 ## CI/CD
-A `CodePipeline` pipeline is set up to watch the `master` branch of this repo, via `AWS CloudFormation`. Template file: [ci-cd-codepipeline.cfn.yml](./ci-cd-codepipeline.cfn.yml). It will automatically run the tests, re-build the image and deploy to the EKS cluster, every time new changes are pushed to `master`. The secret is pulled from `AWS Parameter Store`.
+- A `CodePipeline` pipeline is set up to watch the `master` branch of this repo, via `AWS CloudFormation`. Template file: [ci-cd-codepipeline.cfn.yml](./ci-cd-codepipeline.cfn.yml). It will automatically run the tests, re-build the image and deploy to the EKS cluster, every time new changes are pushed to `master`.
+- The secret is pulled from `AWS Parameter Store`.
+- [buildspec.yml](buildspec.yml) specifies how to build the base image in `CodeBuild`.
+- [simple_jwt_api.yml](simple_jwt_api.yml) defines a Kubernetes manifest, which is used in deployment after tests are passed and a new image is build.
 
 <p align="center">
-  <img src="ci-cd-diagram.png" alt="drawing" width="400"/>
+  <img src="ci-cd-diagram.png" title="CloudFormation Template Visualization" alt="drawing" width="400"/>
 </p>
